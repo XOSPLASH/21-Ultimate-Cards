@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Real 21</title>
+    
+    <link rel="stylesheet" href="style.css">    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <div id="player-container">
+            <h1>PLAYER</h1>
+            <label id="player-count">0/21</label>
+            <div id="player-number-cards" class="card-container"></div>
+            <div id="player-special-cards" class="card-container"></div>
+            <button id="draw-card">Draw Card</button>
+            <button id="keep">Keep</button>
+            <div id="player-message"></div>
+        </div>
+
+        <div id="enemy-container">
+            <h1>ENEMY</h1>
+            <label id="enemy-count">0/21</label>
+            <div id="enemy-number-cards" class="card-container"></div>
+            <div id="enemy-special-cards" class="card-container"></div>
+            <div id="enemy-message"></div>
+        </div>
+
+        <div id="draggable-area" class="draggable-area"></div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
