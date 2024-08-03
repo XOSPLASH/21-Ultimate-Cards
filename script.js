@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function drawCard() {
         const specialCards = ["plus-two", "max-24", "extra-turn"]; // Define special cards
-        let isSpecial = Math.random() < 0.2; // 20% chance for a special card
+        let isSpecial = Math.random() < 0.35; // 20% chance for a special card
 
         if (isSpecial) {
             let cardName = specialCards[Math.floor(Math.random() * specialCards.length)];
