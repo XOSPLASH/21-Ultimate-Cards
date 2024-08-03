@@ -121,8 +121,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     break;
                 case "max-24":
                     maxScore = 24; // Set the new maximum score for the player
+                    enemyMaxScore = 24; // Set the new maximum score for the enemy
                     playerCount.textContent = `${playerScore}/${maxScore}`;
                     playerMessage.textContent = "Special card Max 24 activated!";
+                    enemyCount.textContent = `${enemyScore}/${enemyMaxScore}`;
+                    enemyMessage.textContent = "Special card Max 24 activated!";
                     break;
                 case "extra-turn":
                     isPlayerTurn = true; // Grant an extra turn
@@ -140,7 +143,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     enemyMessage.textContent = "Special card +2 activated!";
                     break;
                 case "max-24":
+                    maxScore = 24; // Set the new maximum score for the player
                     enemyMaxScore = 24; // Set the new maximum score for the enemy
+                    playerCount.textContent = `${playerScore}/${maxScore}`;
+                    playerMessage.textContent = "Special card Max 24 activated!";
                     enemyCount.textContent = `${enemyScore}/${enemyMaxScore}`;
                     enemyMessage.textContent = "Special card Max 24 activated!";
                     break;
