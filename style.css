@@ -1,28 +1,33 @@
+/* Reset styles and global settings */
 body, html {
     margin: 0;
     padding: 0;
     font-family: 'Quicksand', sans-serif;
     box-sizing: border-box;
     height: 100%;
+    background-color: #f0f0f0;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0;
 }
 
+/* Main container */
 main {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 20px;
     padding: 20px;
-    max-width: 1200px;
+    width: 100%;
+    max-width: 1280px; /* Ensuring containers fit within max width */
+    box-sizing: border-box;
+    overflow: hidden; /* Hide overflow to ensure no scrollbars */
 }
 
+/* Player and enemy containers */
 #player-container, #enemy-container {
-    width: 45%;
-    max-width: 500px;
-    min-height: 300px;
+    width: 500px; /* Fixed width for both containers */
+    min-height: 600px; /* Increased height to ensure everything fits */
     border-radius: 10px;
     padding: 20px;
     text-align: center;
@@ -30,56 +35,94 @@ main {
     border: 2px solid #ddd;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/* Card containers */
 .card-container {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 10px;
+    justify-content: center;
+    margin-bottom: 20px; /* Increased margin to accommodate card expansion */
 }
 
+/* Card styles */
 .card {
     width: 60px;
     height: 90px;
     border: 2px solid #000;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .card.special {
     border: 2px solid yellow; /* Yellow border for special cards */
 }
 
+.card:hover {
+    transform: scale(1.1);
+}
+
+/* Button styles */
 button {
     padding: 10px 20px;
     margin: 5px;
+    font-family: inherit;
     font-size: 1em;
     border-radius: 5px;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
+    background-color: #f9f9f9;
 }
 
 button:hover {
-    background-color: #555;
-    color: white;
+    background-color: #e0e0e0;
 }
 
+/* Draggable area styles */
 #draggable-area {
-    width: 200px;
+    width: 100%;
     height: 150px;
     border: 2px dashed #888;
     border-radius: 5px;
     margin-top: 20px;
-    background-color: #fff;
+    background-color: #f9f9f9;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    position: relative; /* Changed to relative for better positioning */
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
 }
 
+#draggable-area:hover {
+    background-color: #e0e0e0;
+}
+
+/* Message styles */
 #player-message, #enemy-message {
-    margin-top: 20px;
+    margin-top: 10px;
     font-weight: bold;
+    color: #333;
+}
+
+/* Responsive styles */
+@media (max-width: 767px) {
+    #player-container, #enemy-container {
+        width: 90%; /* Adjust width for small screens */
+    }
+
+    #draggable-area {
+        max-width: 300px;
+    }
+
+    button {
+        width: calc(50% - 10px);
+        font-size: 0.9em;
+    }
 }
