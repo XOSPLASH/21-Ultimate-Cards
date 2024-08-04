@@ -12,58 +12,49 @@ document.addEventListener("DOMContentLoaded", () => {
     const draggableArea = document.getElementById("draggable-area");
 
     let playerScore = 0;
-    let enemyScore = getRandomCardValue(); // Initialize enemy score with a random card value
-    let maxScore = 21; // Default max score for the player
-    let enemyMaxScore = 21; // Default max score for the enemy
-    let isPlayerTurn = true; // Track whose turn it is
-    let playerHasDrawn = false; // Track if the player has drawn a card
-    let enemyExtraTurn = false; // Track if the enemy has an extra turn
+    let enemyScore = getRandomCardValue(); 
+    let maxScore = 21;
+    let enemyMaxScore = 21;
+    let isPlayerTurn = true;
+    let playerHasDrawn = false;
+    let enemyExtraTurn = false;
+    let playerUsedSpecial = false; 
+    let enemyUsedSpecial = false; 
 
-    // Display the anonymous card for the enemy with a random value
     displayAnonymousCard(enemySpecialCards, enemyScore);
 
     drawCardButton.addEventListener("click", () => {
-        if (!isPlayerTurn || playerHasDrawn) return; // Ensure only the player's turn and only draw once per turn
+        if (!isPlayerTurn || playerHasDrawn) return;
 
-        // Draw a card logic for the player
         let card = drawCard();
-        playerScore += card.value || 0; // Add value to player score, if not special
+        playerScore += card.value || 0;
         playerCount.textContent = `${playerScore}/${maxScore}`;
 
-        // Add card to player's cards display
         addCardToPlayer(card);
 
-        // If the card is a special card, display a message
         if (card.type === "special") {
             playerMessage.textContent = `Special card ${card.name} drawn!`;
         }
 
-        playerHasDrawn = true; // Mark that the player has drawn a card
+        playerHasDrawn = true;
+        endTurn();
     });
 
     keepButton.addEventListener("click", () => {
-        if (!isPlayerTurn) return; // Ensure only the player's turn can keep cards
-        
-        // End player's turn and reset the draw status
+        if (!isPlayerTurn) return;
         endTurn();
     });
 
     function drawCard() {
-        const specialCards = ["plus-two", "max-24", "extra-turn"]; // Define special cards
-        let isSpecial = Math.random() < 0.35; // 20% chance for a special card
+        const specialCards = ["plus-two", "max-24", "extra-turn"];
+        let isSpecial = Math.random() < 0.2;
 
         if (isSpecial) {
             let cardName = specialCards[Math.floor(Math.random() * specialCards.length)];
-            return {
-                name: cardName,
-                type: "special"
-            };
+            return { name: cardName, type: "special" };
         } else {
-            let cardValue = Math.floor(Math.random() * 6) + 1; // Random card value between 1 and 6
-            return {
-                value: cardValue,
-                type: "number"
-            };
+            let cardValue = Math.floor(Math.random() * 6) + 1;
+            return { value: cardValue, type: "number" };
         }
     }
 
@@ -71,11 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
         let cardImg = document.createElement("img");
 
         if (card.type === "special") {
-            cardImg.src = `${card.name}.png`; // e.g., 'cards/special-max-24.png'
-            cardImg.alt = card.name; // e.g., 'max-24'
+            cardImg.src = `${card.name}.png`;
+            cardImg.alt = card.name;
             cardImg.className = 'card special';
         } else {
-            cardImg.src = `${card.value}.png`; // e.g., 'cards/1.png'
+            cardImg.src = `${card.value}.png`;
             cardImg.alt = `Card ${card.value}`;
             cardImg.className = 'card';
         }
@@ -83,6 +74,9 @@ document.addEventListener("DOMContentLoaded", () => {
         cardImg.draggable = true;
         cardImg.addEventListener('dragstart', handleDragStart);
         cardImg.addEventListener('dragend', handleDragEnd);
+
+        cardImg.addEventListener('mouseenter', () => showSpecialEffect(card.name, cardImg));
+        cardImg.addEventListener('mouseleave', () => hideSpecialEffect(cardImg));
 
         if (card.type === "number") {
             playerNumberCards.appendChild(cardImg);
@@ -95,11 +89,11 @@ document.addEventListener("DOMContentLoaded", () => {
         let cardImg = document.createElement("img");
 
         if (card.type === "special") {
-            cardImg.src = `${card.name}.png`; // e.g., 'cards/special-max-24.png'
-            cardImg.alt = card.name; // e.g., 'max-24'
+            cardImg.src = `${card.name}.png`;
+            cardImg.alt = card.name;
             cardImg.className = 'card special';
         } else {
-            cardImg.src = `${card.value}.png`; // e.g., 'cards/1.png'
+            cardImg.src = `${card.value}.png`;
             cardImg.alt = `Card ${card.value}`;
             cardImg.className = 'card';
         }
@@ -113,6 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function applySpecialCardEffects(name, isPlayer = true) {
         if (isPlayer) {
+            playerUsedSpecial = true;
+
             switch (name) {
                 case "plus-two":
                     playerScore += 2;
@@ -120,15 +116,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     playerMessage.textContent = "Special card +2 activated!";
                     break;
                 case "max-24":
-                    maxScore = 24; // Set the new maximum score for the player
-                    enemyMaxScore = 24; // Set the new maximum score for the enemy
+                    maxScore = 24;
+                    enemyMaxScore = 24;
                     playerCount.textContent = `${playerScore}/${maxScore}`;
-                    playerMessage.textContent = "Special card Max 24 activated!";
                     enemyCount.textContent = `${enemyScore}/${enemyMaxScore}`;
-                    enemyMessage.textContent = "Special card Max 24 activated!";
+                    playerMessage.textContent = "Special card Max 24 activated!";
                     break;
                 case "extra-turn":
-                    isPlayerTurn = true; // Grant an extra turn
+                    isPlayerTurn = true;
                     playerMessage.textContent = "Special card Extra Turn activated!";
                     break;
                 default:
@@ -136,6 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     break;
             }
         } else {
+            enemyUsedSpecial = true;
+
             switch (name) {
                 case "plus-two":
                     enemyScore += 2;
@@ -143,15 +140,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     enemyMessage.textContent = "Special card +2 activated!";
                     break;
                 case "max-24":
-                    maxScore = 24; // Set the new maximum score for the player
-                    enemyMaxScore = 24; // Set the new maximum score for the enemy
+                    maxScore = 24;
+                    enemyMaxScore = 24;
                     playerCount.textContent = `${playerScore}/${maxScore}`;
-                    playerMessage.textContent = "Special card Max 24 activated!";
                     enemyCount.textContent = `${enemyScore}/${enemyMaxScore}`;
                     enemyMessage.textContent = "Special card Max 24 activated!";
                     break;
                 case "extra-turn":
-                    enemyExtraTurn = true; // Track that enemy has an extra turn
+                    enemyExtraTurn = true;
                     enemyMessage.textContent = "Special card Extra Turn activated!";
                     break;
                 default:
@@ -159,21 +155,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     break;
             }
         }
+
+        showSpecialEffect(name, draggableArea);
     }
 
     function endTurn() {
         if (isPlayerTurn) {
             isPlayerTurn = false;
-            playerHasDrawn = false; // Reset the draw status for the next turn
+            playerHasDrawn = false;
+            playerUsedSpecial = false;
             enemyTurn();
         }
     }
 
     function enemyTurn() {
-        // Enemy draws a card
         let card = drawCard();
         
-        if (card.type === "special") {
+        if (card.type === "special" && !enemyUsedSpecial) {
             applySpecialCardEffects(card.name, false);
         } else {
             enemyScore += card.value;
@@ -181,32 +179,32 @@ document.addEventListener("DOMContentLoaded", () => {
             addCardToEnemy(card);
         }
 
-        // Decide whether to continue the enemy turn or switch back to the player
         if (enemyExtraTurn) {
-            enemyExtraTurn = false; // Reset extra turn tracker
-            setTimeout(() => { // Add a delay for visual clarity
-                enemyTurn(); // Enemy takes another turn
+            enemyExtraTurn = false;
+            setTimeout(() => {
+                enemyTurn();
             }, 1000);
         } else {
             isPlayerTurn = true;
             playerMessage.textContent = "Your turn!";
         }
+
+        enemyUsedSpecial = false;
     }
 
     function getRandomCardValue() {
-        return Math.floor(Math.random() * 6) + 1; // Random value between 1 and 6
+        return Math.floor(Math.random() * 6) + 1;
     }
 
     function displayAnonymousCard(container, value) {
         let cardImg = document.createElement("img");
-        cardImg.src = `anonymous.png`; // Anonymous card image
+        cardImg.src = `anonymous.png`;
         cardImg.alt = `Anonymous Card`;
         cardImg.className = 'card';
-        cardImg.dataset.value = value; // Store the actual value in a data attribute
+        cardImg.dataset.value = value;
         container.appendChild(cardImg);
     }
 
-    // Drag and drop functionality
     function handleDragStart(event) {
         event.dataTransfer.setData('text/plain', event.target.alt);
         event.target.classList.add('dragging');
@@ -222,14 +220,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     draggableArea.addEventListener('drop', (event) => {
         event.preventDefault();
+        if (!isPlayerTurn || playerUsedSpecial) return;
+
         const cardName = event.dataTransfer.getData('text/plain');
         const card = Array.from(playerSpecialCards.children).find(img => img.alt === cardName);
 
         if (card) {
-            // Apply the special card effect
             applySpecialCardEffects(cardName);
-            // Optionally remove the card after activation
             card.remove();
         }
     });
+
+    function showSpecialEffect(name, targetElement) {
+        const effect = document.createElement('div');
+        effect.className = 'special-effect';
+        effect.style.left = `${targetElement.offsetLeft}px`;
+        effect.style.top = `${targetElement.offsetTop}px`;
+        document.body.appendChild(effect);
+        setTimeout(() => {
+            effect.remove();
+        }, 500);
+    }
+
+    function hideSpecialEffect(targetElement) {
+        // Implementation to remove special effect visuals
+        // if they persist after mouse leave
+    }
 });
