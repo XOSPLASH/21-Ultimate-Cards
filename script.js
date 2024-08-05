@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let specialChance = 0.5;
     let playerScore = 0;
-    let enemyScore = getRandomCardValue();
+    let enemyScore = 0;
     let playerMaxScore = 21;
     let enemyMaxScore = 21;
     let roundNumber = 1;
@@ -117,6 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             switch (name) {
                 case "plus-two":
+                    playerScore += 2;
+                    playerCount.textContent = `${playerScore}/${playerMaxScore}`;
                     addCardToDeck({ value: 2, type: "number" }, playerNumberCards);
                     playerMessage.textContent = "Special card +2 activated! A 2 card has been added to your deck.";
                     break;
@@ -145,6 +147,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             switch (name) {
                 case "plus-two":
+                    enemyScore += 2;
+                    enemyCount.textContent = `${enemyScore}/${enemyMaxScore}`;
+
                     addCardToDeck({ value: 2, type: "number" }, enemyNumberCards);
                     enemyMessage.textContent = "Special card +2 activated! A 2 card has been added to your deck.";
                     break;
