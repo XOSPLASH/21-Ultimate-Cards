@@ -140,20 +140,3 @@ button:hover {
     font-weight: bold;
     color: #333;
 }
-
-/* Responsive styles */
-@media (max-width: 767px) {
-    main {
-        flex-direction: column; /* Stack containers vertically on small screens */
-        align-items: center;
-    }
-
-    #player-container, #drag-container, #enemy-container {
-        width: 90%; /* Adjust width for small screens */
-    }
-
-    button {
-        width: calc(50% - 10px);
-        font-size: 0.9em;
-    }
-}
