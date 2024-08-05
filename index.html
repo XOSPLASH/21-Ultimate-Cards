@@ -10,16 +10,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header>
+        <div id="round-number-container">
+            <span id="round-number-label">Round 1</span>
+        </div>
+    </header>
     <main>
         <div id="player-container">
             <h2>Player</h2>
             <div id="player-number-cards" class="card-container"></div>
             <div id="player-special-cards" class="card-container"></div>
-            <div id="draggable-area">Drag Special Card Here</div>
             <div id="player-message"></div>
             <button id="draw-card">Draw Card</button>
             <button id="keep">Keep</button>
             <div id="player-count">0/21</div>
+        </div>
+
+        <div id="drag-container">
+            <h2>Drag Special Cards here</h2>
+            <div id="draggable-area"></div>
         </div>
 
         <div id="enemy-container">
